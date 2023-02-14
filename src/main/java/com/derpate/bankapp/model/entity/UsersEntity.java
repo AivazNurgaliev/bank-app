@@ -33,17 +33,17 @@ public class UsersEntity {
     @Column(name = "patronymic_name")
     private String patronymicName;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "role")
-    private String role;
-
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "status")
-    private String status;
-
     @Column(name = "created_at")
     private Timestamp createdAt;
 
     @Column(name = "last_login")
     private Timestamp lastLogin;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    private RolesEntity roleId;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id", referencedColumnName = "status_id")
+    private StatusesEntity statusId;
 }
