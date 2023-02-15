@@ -2,9 +2,9 @@ package com.derpate.bankapp.model.entity;
 
 import com.derpate.bankapp.model.security.Role;
 import com.derpate.bankapp.model.security.Status;
-import jakarta.persistence.*;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
