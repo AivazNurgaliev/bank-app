@@ -1,5 +1,7 @@
 package com.derpate.bankapp.model.entity;
 
+import com.derpate.bankapp.model.security.Role;
+import com.derpate.bankapp.model.security.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,17 +35,17 @@ public class UsersEntity {
     @Column(name = "patronymic_name")
     private String patronymicName;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
+
     @Column(name = "created_at")
     private Timestamp createdAt;
 
     @Column(name = "last_login")
     private Timestamp lastLogin;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
-    private RolesEntity roleId;
-
-    @ManyToOne
-    @JoinColumn(name = "status_id", referencedColumnName = "status_id")
-    private StatusesEntity statusId;
 }
