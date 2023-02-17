@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class SecurityUser implements UserDetails {
 
+    //Username here its email
     private final String username;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
@@ -37,7 +38,6 @@ public class SecurityUser implements UserDetails {
         return password;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
@@ -71,10 +71,7 @@ public class SecurityUser implements UserDetails {
                 user.getStatus().equals(Status.ACTIVE),
                 user.getStatus().equals(Status.ACTIVE),
                 user.getRole().getAuthorities()
-
         );
     }
-
-
 }
 
