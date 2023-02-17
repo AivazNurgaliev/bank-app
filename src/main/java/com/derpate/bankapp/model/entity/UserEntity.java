@@ -2,15 +2,21 @@ package com.derpate.bankapp.model.entity;
 
 import com.derpate.bankapp.model.security.Role;
 import com.derpate.bankapp.model.security.Status;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class UsersEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

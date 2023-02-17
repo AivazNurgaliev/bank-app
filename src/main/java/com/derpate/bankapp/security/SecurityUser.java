@@ -1,11 +1,10 @@
 package com.derpate.bankapp.security;
 
-import com.derpate.bankapp.model.entity.UsersEntity;
+import com.derpate.bankapp.model.entity.UserEntity;
 import com.derpate.bankapp.model.security.Status;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -63,7 +62,7 @@ public class SecurityUser implements UserDetails {
         return isActive;
     }
 
-    public static UserDetails fromUser(UsersEntity user) {
+    public static UserDetails fromUser(UserEntity user) {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
