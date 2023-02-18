@@ -44,6 +44,7 @@ public class JwtService {
                 .compact();
     }
 
+    // TODO: 18.02.2023 Разобраться, вроде не так должно работать 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
