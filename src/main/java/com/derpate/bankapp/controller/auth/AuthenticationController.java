@@ -21,6 +21,7 @@ public class AuthenticationController {
         this.authService = authService;
     }
 
+    // TODO: 18.02.2023 if email or phone is present then throw an error(process it) 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody UserDTO userDTO
