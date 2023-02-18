@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+// TODO: 18.02.2023 secondName maybe better to lastName 
 public class UserEntity {
 
     @Id
