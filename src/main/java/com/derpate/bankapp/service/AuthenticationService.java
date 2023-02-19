@@ -38,6 +38,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
+    // TODO: 18.02.2023 email and phone check 
     public AuthenticationResponse register(UserDTO userDTO) throws PasswordDoNotMatchException {
         if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
             throw new PasswordDoNotMatchException("Your passwords do not match");
