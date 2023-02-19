@@ -2,6 +2,7 @@ package com.derpate.bankapp.config;
 
 import com.derpate.bankapp.security.JwtService;
 import com.derpate.bankapp.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,7 +41,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-
+        // TODO: 19.02.2023 expriedjwtexception
+        //todo catch and create exceptionresolver class and process it
         username = jwtService.extractUsername(jwt);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

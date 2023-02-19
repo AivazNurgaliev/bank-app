@@ -3,6 +3,7 @@ package com.derpate.bankapp.service;
 import com.derpate.bankapp.controller.auth.AuthenticationRequest;
 import com.derpate.bankapp.controller.auth.AuthenticationResponse;
 import com.derpate.bankapp.exception.PasswordDoNotMatchException;
+import com.derpate.bankapp.exception.UserAlreadyExistsException;
 import com.derpate.bankapp.model.entity.UserEntity;
 import com.derpate.bankapp.model.entity.dto.UserDTO;
 import com.derpate.bankapp.model.security.Role;
@@ -39,10 +40,17 @@ public class AuthenticationService {
     }
 
     // TODO: 18.02.2023 email and phone check 
-    public AuthenticationResponse register(UserDTO userDTO) throws PasswordDoNotMatchException {
+    public AuthenticationResponse register(UserDTO userDTO) throws PasswordDoNotMatchException, UserAlreadyExistsException {
         if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
             throw new PasswordDoNotMatchException("Your passwords do not match");
 
+        }
+
+        UserEntity checkUserEmail = userRepository.findByEmail(userDTO.getEmail());
+        UserEntity checkUserPhone = userRepository.findByPhone(userDTO.getPhone());
+
+        if (checkUserEmail != null || checkUserPhone != null) {
+            throw new UserAlreadyExistsException("User with that phone or email exists");
         }
 
         Timestamp timestamp = new Timestamp(new Date().getTime());
@@ -59,6 +67,8 @@ public class AuthenticationService {
                 .createdAt(timestamp)
                 .lastLogin(timestamp)
                 .build();
+
+
 
         userRepository.save(user);
         UserDetails userDetails = SecurityUser.fromUser(user);

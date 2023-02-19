@@ -1,6 +1,7 @@
 package com.derpate.bankapp.controller.auth;
 
 import com.derpate.bankapp.exception.PasswordDoNotMatchException;
+import com.derpate.bankapp.exception.UserAlreadyExistsException;
 import com.derpate.bankapp.model.entity.dto.UserDTO;
 import com.derpate.bankapp.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody UserDTO userDTO
-            ) throws PasswordDoNotMatchException {
+            ) throws PasswordDoNotMatchException, UserAlreadyExistsException {
         return ResponseEntity.ok(authService.register(userDTO));
     }
 
