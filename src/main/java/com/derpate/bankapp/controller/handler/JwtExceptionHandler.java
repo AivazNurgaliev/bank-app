@@ -22,21 +22,6 @@ import java.io.IOException;
 
 @ControllerAdvice
 public class JwtExceptionHandler {
-    // TODO: 21.02.2023 rename
-/*    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Object> handleJwtRuntimeException(RuntimeException e, WebRequest request) throws IOException {
-        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI().toString();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT, e.getMessage(), requestURI);
-        return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.CONFLICT);
-    }*/
-
-/*    @ExceptionHandler(Expi.class)
-    public ResponseEntity<ErrorResponse> handleJwtSignatureException(SignatureException e, WebRequest request) {
-        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), requestURI);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }*/
-
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<ErrorResponse> handleJwtExceptionException(JwtException e, WebRequest request) {
         System.out.println("6 players");
@@ -51,16 +36,5 @@ public class JwtExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage(), requestURI);
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
-
-/*
-    @ExceptionHandler(UnsupportedJwtException.class)
-    public ResponseEntity<ErrorResponse> handleJwtUnsupportedException(UnsupportedJwtException e, WebRequest request) {
-        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage(), requestURI);
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-    }
-*/
-
-
 
 }
