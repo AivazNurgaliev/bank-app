@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String SECRET_KEY = "442A472D4B6150645367556B58703273357638792F423F4528482B4D62516554";
-    private static final Integer timeToExpire = 1000 * 60 * 60 * 24 * 365;
+    private static final Long timeToExpire = Long.valueOf(1000 * 60 * 60 * 24);
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -33,14 +33,13 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    // TODO: 19.02.2023 exp тоже заменить на variable
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + timeToExpire))
+                .setExpiration(new Date(System.currentTimeMillis() + 365 * timeToExpire))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

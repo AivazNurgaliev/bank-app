@@ -15,4 +15,10 @@ public class MainController {
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hello from secured endpoint");
     }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasAuthority('admins:permission')")
+    public ResponseEntity<String> sayHelloToAdmin() {
+        return ResponseEntity.ok("Hello from secured endpoint to ADMIN");
+    }
 }
