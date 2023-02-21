@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -29,18 +28,19 @@ public class AuthenticationService {
     private final PasswordService passwordService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @Autowired
     public AuthenticationService(UserRepository userRepository,
                                  PasswordService passwordService,
-                                 JwtService jwtService, AuthenticationManager authenticationManager) {
+                                 JwtService jwtService, AuthenticationManager authenticationManager, UserService userService) {
         this.userRepository = userRepository;
         this.passwordService = passwordService;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
-    // TODO: 18.02.2023 email and phone check 
     public AuthenticationResponse register(UserDTO userDTO) throws PasswordDoNotMatchException, UserAlreadyExistsException {
         if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
             throw new PasswordDoNotMatchException("Your passwords do not match");
@@ -69,8 +69,6 @@ public class AuthenticationService {
                 .lastLogin(timestamp)
                 .build();
 
-
-
         userRepository.save(user);
         UserDetails userDetails = SecurityUser.fromUser(user);
         String jwtToken = jwtService.generateToken(userDetails);
@@ -91,13 +89,14 @@ public class AuthenticationService {
         );
         //todo created last login;
         UserEntity user = userRepository.findByEmail(authenticationRequest.getEmail());
-
         if (user == null) {
             throw new UserNotFoundException("User does not exist in db");
         }
 
         UserDetails userDetails = SecurityUser.fromUser(user);
         String jwtToken = jwtService.generateToken(userDetails);
+
+        userService.updateLoginTime(user);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
