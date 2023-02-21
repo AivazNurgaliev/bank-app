@@ -34,17 +34,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String username;
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-
         jwt = authHeader.substring(7);
-        // TODO: 19.02.2023 expriedjwtexception
+        // TODO: 19.02.2023 expriedjwtexception and signature exception
         //todo catch and create exceptionresolver class and process it
         username = jwtService.extractUsername(jwt);
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (jwtService.isTokenValid(jwt, userDetails)) {
@@ -58,9 +55,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }
