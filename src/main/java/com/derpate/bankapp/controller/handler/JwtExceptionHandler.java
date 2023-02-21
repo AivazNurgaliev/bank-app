@@ -3,6 +3,10 @@ package com.derpate.bankapp.controller.handler;
 import com.derpate.bankapp.exception.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,19 +30,37 @@ public class JwtExceptionHandler {
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.CONFLICT);
     }*/
 
-    @ExceptionHandler(RuntimeException.class)
-        public ResponseEntity<ErrorResponse> handleJwtRuntimeException(RuntimeException e, WebRequest request) throws IOException {
-        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI().toString();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage(), requestURI);
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+/*    @ExceptionHandler(Expi.class)
+    public ResponseEntity<ErrorResponse> handleJwtSignatureException(SignatureException e, WebRequest request) {
+        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), requestURI);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }*/
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtExceptionException(JwtException e, WebRequest request) {
+        System.out.println("6 players");
+        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), requestURI);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    public String convertObjectToJson(Object object) throws JsonProcessingException {
-        if (object == null) {
-            return null;
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(object);
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtExpriredException(ExpiredJwtException e, WebRequest request) {
+        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage(), requestURI);
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
+
+/*
+    @ExceptionHandler(UnsupportedJwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtUnsupportedException(UnsupportedJwtException e, WebRequest request) {
+        String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI();
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage(), requestURI);
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+*/
+
+
 
 }
