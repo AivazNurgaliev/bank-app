@@ -20,11 +20,11 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class JwtExceptionHandler {
+
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<ErrorResponse> handleJwtExceptionException(JwtException e, WebRequest request) {
-        System.out.println("6 players");
         String requestURI = ((ServletWebRequest)request).getRequest().getRequestURI();
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), requestURI);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

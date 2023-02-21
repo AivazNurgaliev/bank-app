@@ -4,6 +4,7 @@ import com.derpate.bankapp.controller.auth.AuthenticationRequest;
 import com.derpate.bankapp.controller.auth.AuthenticationResponse;
 import com.derpate.bankapp.exception.PasswordDoNotMatchException;
 import com.derpate.bankapp.exception.UserAlreadyExistsException;
+import com.derpate.bankapp.exception.UserNotFoundException;
 import com.derpate.bankapp.model.entity.UserEntity;
 import com.derpate.bankapp.model.entity.dto.UserDTO;
 import com.derpate.bankapp.model.security.Role;
@@ -80,7 +81,8 @@ public class AuthenticationService {
     }
 
     // TODO: 18.02.2023 optional maybe???
-    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+    public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws UserNotFoundException {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
@@ -91,7 +93,7 @@ public class AuthenticationService {
         UserEntity user = userRepository.findByEmail(authenticationRequest.getEmail());
 
         if (user == null) {
-            throw new UsernameNotFoundException("User does not exist in db");
+            throw new UserNotFoundException("User does not exist in db");
         }
 
         UserDetails userDetails = SecurityUser.fromUser(user);
