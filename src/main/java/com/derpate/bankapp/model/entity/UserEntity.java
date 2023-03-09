@@ -1,5 +1,6 @@
 package com.derpate.bankapp.model.entity;
 
+import com.derpate.bankapp.model.dto.UserResponse;
 import com.derpate.bankapp.model.security.Role;
 import com.derpate.bankapp.model.security.Status;
 import lombok.AllArgsConstructor;
@@ -55,4 +56,18 @@ public class UserEntity {
 
     @Column(name = "last_login")
     private Timestamp lastLogin;
+
+
+    public UserResponse fromUserEntity(UserEntity userEntity) {
+        UserResponse userResponse = UserResponse.builder()
+                .email(userEntity.getEmail())
+                .phone(userEntity.getPhone())
+                .firstName(userEntity.getFirstName())
+                .secondName(userEntity.getSecondName())
+                .patronymicName(userEntity.getPatronymicName())
+                .lastLogin(userEntity.getLastLogin())
+                .build();
+
+        return userResponse;
+    }
 }

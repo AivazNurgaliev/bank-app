@@ -1,28 +1,17 @@
 package com.derpate.bankapp.service;
 
+import com.derpate.bankapp.exception.UserAlreadyExistException;
+import com.derpate.bankapp.exception.UserNotFoundException;
+import com.derpate.bankapp.model.dto.UserCreateRequest;
+import com.derpate.bankapp.model.dto.UserResponse;
+import com.derpate.bankapp.model.dto.UserUpdateRequest;
 import com.derpate.bankapp.model.entity.UserEntity;
-import com.derpate.bankapp.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.sql.Timestamp;
-import java.util.Date;
+public interface UserService {
 
-@Service
-public class UserService {
-
-    private final UserRepository userRepository;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Transactional
-    public UserEntity updateLoginTime(UserEntity user) {
-        user.setLastLogin(new Timestamp(new Date().getTime()));
-        return user;
-    }
+    UserEntity createMe(UserCreateRequest userCreateRequest);
+    UserResponse getMe();
+    void deleteMe() throws UserNotFoundException;
+    void updateMe(UserUpdateRequest userUpdateRequest) throws UserAlreadyExistException;
+    // TODO: 09.03.2023 patch password 
 }

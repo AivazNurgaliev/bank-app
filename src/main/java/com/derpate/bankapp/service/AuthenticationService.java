@@ -3,10 +3,10 @@ package com.derpate.bankapp.service;
 import com.derpate.bankapp.controller.auth.AuthenticationRequest;
 import com.derpate.bankapp.controller.auth.AuthenticationResponse;
 import com.derpate.bankapp.exception.PasswordDoNotMatchException;
-import com.derpate.bankapp.exception.UserAlreadyExistsException;
+import com.derpate.bankapp.exception.UserAlreadyExistException;
 import com.derpate.bankapp.exception.UserNotFoundException;
 import com.derpate.bankapp.model.entity.UserEntity;
-import com.derpate.bankapp.model.entity.dto.UserDTO;
+import com.derpate.bankapp.model.dto.UserCreateRequest;
 import com.derpate.bankapp.model.security.Role;
 import com.derpate.bankapp.model.security.Status;
 import com.derpate.bankapp.repository.UserRepository;
@@ -28,48 +28,35 @@ public class AuthenticationService {
     private final PasswordService passwordService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
     public AuthenticationService(UserRepository userRepository,
                                  PasswordService passwordService,
-                                 JwtService jwtService, AuthenticationManager authenticationManager, UserService userService) {
+                                 JwtService jwtService, AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl) {
         this.userRepository = userRepository;
         this.passwordService = passwordService;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
-    public AuthenticationResponse register(UserDTO userDTO) throws PasswordDoNotMatchException, UserAlreadyExistsException {
-        if (!userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
+    public AuthenticationResponse register(UserCreateRequest userCreateRequest) throws PasswordDoNotMatchException, UserAlreadyExistException {
+        if (!userCreateRequest.getPassword().equals(userCreateRequest.getRepeatPassword())) {
             throw new PasswordDoNotMatchException("Your passwords do not match");
 
         }
 
-        UserEntity checkUserEmail = userRepository.findByEmail(userDTO.getEmail());
-        UserEntity checkUserPhone = userRepository.findByPhone(userDTO.getPhone());
+        UserEntity checkUserEmail = userRepository.findByEmail(userCreateRequest.getEmail());
+        UserEntity checkUserPhone = userRepository.findByPhone(userCreateRequest.getPhone());
 
         if (checkUserEmail != null || checkUserPhone != null) {
-            throw new UserAlreadyExistsException("User with that phone or email exists");
+            throw new UserAlreadyExistException("User with that phone or email exists");
         }
 
-        Timestamp timestamp = new Timestamp(new Date().getTime());
 
-        UserEntity user = UserEntity.builder()
-                .firstName(userDTO.getFirstName())
-                .secondName(userDTO.getSecondName())
-                .patronymicName(userDTO.getPatronymicName())
-                .phone(userDTO.getPhone())
-                .email(userDTO.getEmail())
-                .password(passwordService.encode(userDTO.getPassword()))
-                .role(Role.USER)
-                .status(Status.ACTIVE)
-                .createdAt(timestamp)
-                .lastLogin(timestamp)
-                .build();
+        UserEntity user = userServiceImpl.createMe(userCreateRequest);
 
-        userRepository.save(user);
         UserDetails userDetails = SecurityUser.fromUser(user);
         String jwtToken = jwtService.generateToken(userDetails);
 
@@ -87,7 +74,7 @@ public class AuthenticationService {
                         authenticationRequest.getPassword()
                 )
         );
-        //todo created last login;
+
         UserEntity user = userRepository.findByEmail(authenticationRequest.getEmail());
         if (user == null) {
             throw new UserNotFoundException("User does not exist in db");
@@ -96,7 +83,7 @@ public class AuthenticationService {
         UserDetails userDetails = SecurityUser.fromUser(user);
         String jwtToken = jwtService.generateToken(userDetails);
 
-        userService.updateLoginTime(user);
+        userServiceImpl.updateLoginTime(user);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)

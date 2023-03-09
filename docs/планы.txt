@@ -1,0 +1,27 @@
+Auth: 
+1) logout feature
+2) ? Maybe send verification code to email to ensure that user is not a robot
+
+User:
+1) get User - done
+2) add user - done
+3) patch password
+4) forgot password
+5) update some info that user selected - done
+6) UserRequest, UserResponse all of it instead UserDTO,
+maybe a record type too
+bank-service:
+1) create db table with bank cards(accounts)
+2) withdrawal(transaction)
+3) deposit(transaction)
+4) transfer by phone/accounts number/cards number(transaction)
+if phone chosen then transfer to priority card(if there's no priority card?maybe mark first created card with priority)
+5) crud with cards, accounts
+6) send verification code to email to ensure operation verification comes from user itself
+
+--Maybe
+doc-generation-service:
+1) generate pdf, user's transaction history every month
+or custom date interval
+2) Maybe draw some diagrams, pie charts in user's report
+
