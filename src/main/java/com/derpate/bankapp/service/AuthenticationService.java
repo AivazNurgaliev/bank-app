@@ -25,17 +25,16 @@ import java.util.Date;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordService passwordService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserServiceImpl userServiceImpl;
 
     @Autowired
     public AuthenticationService(UserRepository userRepository,
-                                 PasswordService passwordService,
-                                 JwtService jwtService, AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl) {
+                                 JwtService jwtService,
+                                 AuthenticationManager authenticationManager,
+                                 UserServiceImpl userServiceImpl) {
         this.userRepository = userRepository;
-        this.passwordService = passwordService;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.userServiceImpl = userServiceImpl;

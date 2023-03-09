@@ -1,9 +1,11 @@
 package com.derpate.bankapp.service;
 
+import com.derpate.bankapp.exception.PasswordDoNotMatchException;
 import com.derpate.bankapp.exception.UserAlreadyExistException;
 import com.derpate.bankapp.exception.UserNotFoundException;
 import com.derpate.bankapp.model.dto.UserCreateRequest;
 import com.derpate.bankapp.model.dto.UserResponse;
+import com.derpate.bankapp.model.dto.UserUpdatePasswordRequest;
 import com.derpate.bankapp.model.dto.UserUpdateRequest;
 import com.derpate.bankapp.model.entity.UserEntity;
 import com.derpate.bankapp.model.security.Role;
@@ -11,6 +13,7 @@ import com.derpate.bankapp.model.security.Status;
 import com.derpate.bankapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,12 +24,12 @@ import java.util.Date;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordService passwordService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordService passwordService) {
+    public UserServiceImpl(UserRepository userRepository, PasswordService passwordService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordService = passwordService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -45,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 .patronymicName(userCreateRequest.getPatronymicName())
                 .phone(userCreateRequest.getPhone())
                 .email(userCreateRequest.getEmail())
-                .password(passwordService.encode(userCreateRequest.getPassword()))
+                .password(passwordEncoder.encode(userCreateRequest.getPassword()))
                 .role(Role.USER)
                 .status(Status.ACTIVE)
                 .createdAt(timestamp)
@@ -92,6 +95,19 @@ public class UserServiceImpl implements UserService {
         user.setSecondName(userUpdateRequest.getSecondName());
         user.setPatronymicName(userUpdateRequest.getPatronymicName());
 
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void patchMyPassword(UserUpdatePasswordRequest userUpdatePasswordRequest) throws PasswordDoNotMatchException {
+        UserEntity user = userRepository.findByEmail(getMyEmail());
+        System.out.println(user.getPassword());
+
+        if (!passwordEncoder.matches(userUpdatePasswordRequest.getOldPassword(), user.getPassword())) {
+            throw new PasswordDoNotMatchException("your old password doesn't match with this one");
+        }
+        user.setPassword(passwordEncoder.encode(userUpdatePasswordRequest.getNewPassword()));
         userRepository.save(user);
     }
 

@@ -5,7 +5,7 @@ Auth:
 User:
 1) get User - done
 2) add user - done
-3) patch password
+3) patch password - done
 4) forgot password
 5) update some info that user selected - done
 6) UserRequest, UserResponse all of it instead UserDTO,
