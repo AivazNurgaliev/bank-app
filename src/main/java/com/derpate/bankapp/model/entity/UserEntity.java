@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Builder
@@ -56,6 +57,9 @@ public class UserEntity {
 
     @Column(name = "last_login")
     private Timestamp lastLogin;
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardEntity> cards;
 
 
     public UserResponse fromUserEntity(UserEntity userEntity) {
