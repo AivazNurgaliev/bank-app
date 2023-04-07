@@ -1,5 +1,6 @@
 package com.derpate.bankapp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,11 +20,12 @@ public class VendorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vendor_id")
-    private Integer userId;
+    private Integer vendorId;
 
     @Column(name = "vendor_name")
     private String vendorName;
 
-    @OneToMany(mappedBy = "vendorId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CardEntity> cards;
+    @OneToMany(mappedBy = "vendorByVendorId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CardEntity> cardsByVendorId;
 }

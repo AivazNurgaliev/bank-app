@@ -6,10 +6,13 @@ import com.derpate.bankapp.exception.UserNotFoundException;
 import com.derpate.bankapp.model.dto.UserResponse;
 import com.derpate.bankapp.model.dto.UserUpdatePasswordRequest;
 import com.derpate.bankapp.model.dto.UserUpdateRequest;
+import com.derpate.bankapp.model.entity.CardEntity;
 import com.derpate.bankapp.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -40,5 +43,10 @@ public class UserController {
     @PatchMapping("/user/me")
     public void updatePassword(@RequestBody UserUpdatePasswordRequest userUpdatePasswordRequest) throws PasswordDoNotMatchException {
         userServiceImpl.patchMyPassword(userUpdatePasswordRequest);
+    }
+
+    @GetMapping("/user/cards")
+    public List<CardEntity> getUserCards() {
+        return userServiceImpl.getUserCards();
     }
 }

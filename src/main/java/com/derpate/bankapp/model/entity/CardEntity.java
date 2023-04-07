@@ -1,5 +1,6 @@
 package com.derpate.bankapp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,6 +24,12 @@ public class CardEntity {
     @Column(name = "card_id")
     private Long cardId;
 
+    @Column(name = "vendor_id")
+    private Integer vendorId;
+
+    @Column(name = "user_id")
+    private Integer userId;
+
     // TODO: 10.03.2023 user id vendor id;
 
     @Column(name = "created_at")
@@ -33,16 +41,23 @@ public class CardEntity {
     @Column(name = "cvv", length = 3)
     private String cvv;
 
+    @Column(name = "pin")
+    private String pin;
+
     @Column(name = "balance", precision = 9, scale = 2)
     private BigDecimal balance;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vendor_id")
-    private VendorEntity vendorId;
+    @ManyToOne
+    @JoinColumn(name = "vendor_id", referencedColumnName = "vendor_id", updatable = false, insertable = false)
+    @JsonIgnore
+    private VendorEntity vendorByVendorId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private UserEntity userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", updatable = false, insertable = false)
+    @JsonIgnore
+    private UserEntity userByUserId;
 
+    @OneToMany(mappedBy = "usersCardsByCardId")
+    private List<DepositEntity> depositsByCardId;
 
 }

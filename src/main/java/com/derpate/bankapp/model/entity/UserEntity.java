@@ -58,9 +58,11 @@ public class UserEntity {
     @Column(name = "last_login")
     private Timestamp lastLogin;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CardEntity> cards;
+    @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardEntity> cardsByUserId;
 
+    @OneToMany(mappedBy = "usersByUserId")
+    private List<DepositEntity> depositsByUserId;
 
     public UserResponse fromUserEntity(UserEntity userEntity) {
         UserResponse userResponse = UserResponse.builder()

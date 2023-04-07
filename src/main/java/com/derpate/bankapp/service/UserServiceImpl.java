@@ -7,6 +7,7 @@ import com.derpate.bankapp.model.dto.UserCreateRequest;
 import com.derpate.bankapp.model.dto.UserResponse;
 import com.derpate.bankapp.model.dto.UserUpdatePasswordRequest;
 import com.derpate.bankapp.model.dto.UserUpdateRequest;
+import com.derpate.bankapp.model.entity.CardEntity;
 import com.derpate.bankapp.model.entity.UserEntity;
 import com.derpate.bankapp.model.security.Role;
 import com.derpate.bankapp.model.security.Status;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,6 +62,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public UserEntity getUserEntity() {
+        var user = userRepository.findByEmail(getMyEmail());
+        return user;
+    }
     @Override
     public UserResponse getMe() {
         UserEntity user = userRepository.findByEmail(getMyEmail());
@@ -111,7 +117,21 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    private String getMyEmail() {
+    @Override
+    public List<CardEntity> getUserCards() {
+        var user = userRepository.findByUserId(getMyId());
+
+        return user.getCardsByUserId();
+    }
+
+    public String getMyEmail() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    public Integer getMyId() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByEmail(email);
+
+        return user.getUserId();
     }
 }

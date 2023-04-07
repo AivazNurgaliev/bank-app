@@ -3,12 +3,12 @@ package com.derpate.bankapp.repository;
 import com.derpate.bankapp.model.entity.CardEntity;
 import com.derpate.bankapp.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    UserEntity findByEmail(String email);
-    UserEntity findByPhone(String phone);
-    UserEntity findByUserId(Integer userId);
+@Repository
+public interface CardRepository extends JpaRepository<CardEntity, Long> {
+    CardEntity findByCardId(Long cardId);
     List<CardEntity> findAllByUserId(Integer userId);
 }
