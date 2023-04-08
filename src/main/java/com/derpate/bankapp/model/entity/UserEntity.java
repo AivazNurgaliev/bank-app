@@ -3,16 +3,15 @@ package com.derpate.bankapp.model.entity;
 import com.derpate.bankapp.model.dto.UserResponse;
 import com.derpate.bankapp.model.security.Role;
 import com.derpate.bankapp.model.security.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -59,18 +58,23 @@ public class UserEntity {
     private Timestamp lastLogin;
 
     @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<CardEntity> cardsByUserId;
 
     @OneToMany(mappedBy = "usersByUserId")
+    @JsonIgnore
     private List<DepositEntity> depositsByUserId;
 
     @OneToMany(mappedBy = "usersByUserId")
+    @JsonIgnore
     private List<WithdrawEntity> withdrawalsByUserId;
 
     @OneToMany(mappedBy = "usersBySenderId")
+    @JsonIgnore
     private List<TransferEntity> transfersBySenderId;
 
     @OneToMany(mappedBy = "usersByReceiverId")
+    @JsonIgnore
     private List<TransferEntity> transfersByReceiverId;
 
     public UserResponse fromUserEntity(UserEntity userEntity) {

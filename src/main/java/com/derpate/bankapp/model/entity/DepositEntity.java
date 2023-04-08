@@ -1,16 +1,14 @@
 package com.derpate.bankapp.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,5 +42,16 @@ public class DepositEntity {
     @JoinColumn(name = "card_id", referencedColumnName = "card_id", updatable = false, insertable = false)
     @JsonIgnore
     private CardEntity usersCardsByCardId;
-
+// TODO: 08.04.2023 подумать  
+/*    @Override
+    public String toString() {
+        return "DepositEntity{" +
+                "depositId=" + depositId +
+                ", userId=" + userId +
+                ", cardId=" + cardId +
+                ", createdAt=" + createdAt +
+                ", amount=" + amount +
+                ", usersByUserId=" + usersByUserId +
+                '}';
+    }*/
 }

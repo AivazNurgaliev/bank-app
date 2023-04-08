@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// TODO: 08.04.2023 убрать data -> getter setter без tostring 
 @Data
 @Builder
 @AllArgsConstructor

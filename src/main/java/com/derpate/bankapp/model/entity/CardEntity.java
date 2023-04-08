@@ -1,17 +1,15 @@
 package com.derpate.bankapp.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -58,15 +56,19 @@ public class CardEntity {
     private UserEntity userByUserId;
 
     @OneToMany(mappedBy = "usersCardsByCardId")
+    @JsonIgnore
     private List<DepositEntity> depositsByCardId;
 
     @OneToMany(mappedBy = "usersCardsByCardId")
+    @JsonIgnore
     private List<WithdrawEntity> withdrawalsByCardId;
 
     @OneToMany(mappedBy = "usersCardsBySenderCardId")
+    @JsonIgnore
     private List<TransferEntity> transfersBySenderCardId;
 
     @OneToMany(mappedBy = "usersCardsByReceiverCardId")
+    @JsonIgnore
     private List<TransferEntity> transfersByReceiverCardId;
 
 }

@@ -9,6 +9,7 @@ import com.derpate.bankapp.model.entity.TransferEntity;
 import com.derpate.bankapp.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class TransferController {
         this.transferService = transferService;
     }
 
-    @GetMapping("/transfer")
+    @PostMapping("/transfer")
     public TransferEntity createTransfer(@RequestBody TransferCreateRequest transferCreateRequest) throws NotEnoughMoneyException,
             InvalidOperationException, InvalidPinException, CardNotFoundException {
         return transferService.createTransfer(transferCreateRequest);

@@ -2,6 +2,7 @@ package com.derpate.bankapp.service;
 
 import com.derpate.bankapp.exception.CardNotFoundException;
 import com.derpate.bankapp.model.dto.CardCreateRequest;
+import com.derpate.bankapp.model.dto.ReportResponse;
 import com.derpate.bankapp.model.entity.CardEntity;
 import com.derpate.bankapp.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,8 @@ public class CardServiceImpl implements CardService{
         return card;
     }
 
+
+
     @Override
     public List<CardEntity> getAllCards() throws CardNotFoundException {
         var cards = cardRepository.findAllByUserId(userServiceImpl.getMyId());
@@ -79,6 +82,7 @@ public class CardServiceImpl implements CardService{
 
         return cards;
     }
+
 
     private StringBuilder generateCVV() {
         int randomNum = ThreadLocalRandom.current().nextInt(0, 999 + 1);

@@ -58,7 +58,6 @@ public class DepositServiceImpl implements DepositService {
                 .build();
 
         card.setBalance(card.getBalance().add(depositCreateRequest.getAmount()));
-
         return depositRepository.save(deposit);
     }
 }
