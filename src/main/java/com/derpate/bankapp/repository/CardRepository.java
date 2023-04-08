@@ -11,4 +11,6 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<CardEntity, Long> {
     CardEntity findByCardId(Long cardId);
     List<CardEntity> findAllByUserId(Integer userId);
+    boolean existsByCardId(Integer cardId);
+    boolean existsByUserIdAndCardId(Integer userId, Long cardId);
 }

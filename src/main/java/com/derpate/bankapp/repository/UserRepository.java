@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findByPhone(String phone);
     UserEntity findByUserId(Integer userId);
     List<CardEntity> findAllByUserId(Integer userId);
+
+    boolean existsByUserId(Integer userId);
 }

@@ -15,13 +15,12 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "deposits")
-public class DepositEntity {
-
+@Table(name = "withdrawals")
+public class WithdrawEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "deposit_id")
-    private Long depositId;
+    @Column(name = "withdrawal_id")
+    private Long withdrawalId;
 
     @Column(name = "user_id")
     private Integer userId;
@@ -44,5 +43,4 @@ public class DepositEntity {
     @JoinColumn(name = "card_id", referencedColumnName = "card_id", updatable = false, insertable = false)
     @JsonIgnore
     private CardEntity usersCardsByCardId;
-
 }

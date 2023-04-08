@@ -60,4 +60,13 @@ public class CardEntity {
     @OneToMany(mappedBy = "usersCardsByCardId")
     private List<DepositEntity> depositsByCardId;
 
+    @OneToMany(mappedBy = "usersCardsByCardId")
+    private List<WithdrawEntity> withdrawalsByCardId;
+
+    @OneToMany(mappedBy = "usersCardsBySenderCardId")
+    private List<TransferEntity> transfersBySenderCardId;
+
+    @OneToMany(mappedBy = "usersCardsByReceiverCardId")
+    private List<TransferEntity> transfersByReceiverCardId;
+
 }

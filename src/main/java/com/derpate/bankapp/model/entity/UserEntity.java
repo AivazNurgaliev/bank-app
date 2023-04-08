@@ -64,6 +64,15 @@ public class UserEntity {
     @OneToMany(mappedBy = "usersByUserId")
     private List<DepositEntity> depositsByUserId;
 
+    @OneToMany(mappedBy = "usersByUserId")
+    private List<WithdrawEntity> withdrawalsByUserId;
+
+    @OneToMany(mappedBy = "usersBySenderId")
+    private List<TransferEntity> transfersBySenderId;
+
+    @OneToMany(mappedBy = "usersByReceiverId")
+    private List<TransferEntity> transfersByReceiverId;
+
     public UserResponse fromUserEntity(UserEntity userEntity) {
         UserResponse userResponse = UserResponse.builder()
                 .email(userEntity.getEmail())
