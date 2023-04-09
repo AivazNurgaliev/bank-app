@@ -23,6 +23,6 @@ public class ReportResponse {
     private BigDecimal totalReceivedTransfers;
     private List<DepositEntity> deposits;
     private List<WithdrawEntity> withdrawals;
-    private List<TransferEntity> sendTransfers;
-    private List<TransferEntity> receivedTransfers;
+    private List<TransferResponse> sendTransfers;
+    private List<TransferResponse> receivedTransfers;
 }

@@ -5,9 +5,11 @@ import com.derpate.bankapp.model.dto.ReportCreateRequest;
 import com.derpate.bankapp.model.dto.ReportResponse;
 import com.derpate.bankapp.model.entity.DepositEntity;
 import com.derpate.bankapp.service.ReportServiceImpl;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,7 @@ public class ReportController {
 */
 
     @GetMapping("/reports")
-    public List<ReportResponse> getAllReports(@RequestBody ReportCreateRequest reportCreateRequest) throws CardNotFoundException {
+    public List<ReportResponse> getAllReports(@RequestBody ReportCreateRequest reportCreateRequest) throws CardNotFoundException, DocumentException, FileNotFoundException {
         return reportService.getAllReports(reportCreateRequest);
     }
 
