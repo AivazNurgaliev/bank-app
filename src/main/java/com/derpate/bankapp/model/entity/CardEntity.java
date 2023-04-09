@@ -56,19 +56,19 @@ public class CardEntity {
     private UserEntity userByUserId;
 
     @OneToMany(mappedBy = "usersCardsByCardId")
-    @JsonIgnore
+    //@JsonIgnore
     private List<DepositEntity> depositsByCardId;
 
     @OneToMany(mappedBy = "usersCardsByCardId")
-    @JsonIgnore
+    //@JsonIgnore
     private List<WithdrawEntity> withdrawalsByCardId;
 
     @OneToMany(mappedBy = "usersCardsBySenderCardId")
-    @JsonIgnore
+    //@JsonIgnore
     private List<TransferEntity> transfersBySenderCardId;
 
     @OneToMany(mappedBy = "usersCardsByReceiverCardId")
-    @JsonIgnore
+    //@JsonIgnore
     private List<TransferEntity> transfersByReceiverCardId;
 
 }

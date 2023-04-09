@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -16,7 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 public class ReportResponse {
     private Long cardId;
+    private BigDecimal totalDeposits;
+    private BigDecimal totalWithdrawals;
+    private BigDecimal totalSendTransfers;
+    private BigDecimal totalReceivedTransfers;
     private List<DepositEntity> deposits;
     private List<WithdrawEntity> withdrawals;
-    private List<TransferEntity> transfers;
+    private List<TransferEntity> sendTransfers;
+    private List<TransferEntity> receivedTransfers;
 }

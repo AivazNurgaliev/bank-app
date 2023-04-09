@@ -2,6 +2,7 @@ package com.derpate.bankapp.controller;
 
 import com.derpate.bankapp.exception.CardNotFoundException;
 import com.derpate.bankapp.model.dto.ReportCreateRequest;
+import com.derpate.bankapp.model.dto.ReportResponse;
 import com.derpate.bankapp.model.entity.DepositEntity;
 import com.derpate.bankapp.service.ReportServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,16 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    @PostMapping("/report/{cardId}")
-    public List<DepositEntity> createDepositReport(@PathVariable(name = "cardId") Long cardId, @RequestBody ReportCreateRequest reportCreateRequest) throws CardNotFoundException {
+/*
+    @GetMapping("/report/{cardId}")
+    public List<DepositEntity> getDepositReport(@PathVariable(name = "cardId") Long cardId, @RequestBody ReportCreateRequest reportCreateRequest) throws CardNotFoundException {
         return reportService.getDepositsReportByCardId(cardId, reportCreateRequest);
     }
+*/
+
+    @GetMapping("/reports")
+    public List<ReportResponse> getAllReports(@RequestBody ReportCreateRequest reportCreateRequest) throws CardNotFoundException {
+        return reportService.getAllReports(reportCreateRequest);
+    }
+
 }
